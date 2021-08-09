@@ -26,15 +26,15 @@ pub fn display(page: &str) -> () {
 pub fn detect_key() -> String {
     let terminal = stdout().into_raw_mode();
     let stdout = terminal.unwrap();
-
+    
     // Use asynchronous stdin
     let mut stdin = termion::async_stdin().keys();
     let mut s = String::new();
-
+    
     loop {
         // Read input (if any)
         let input = stdin.next();
-
+        
         // If a key was pressed
         if let Some(Ok(key)) = input {
             match key {
@@ -44,7 +44,7 @@ pub fn detect_key() -> String {
                 _ => {
                     if let termion::event::Key::Char(k) = key {
                         s.push(k);
-                  }
+                    }
                     stdout.lock().flush().unwrap();
                 }
             }
@@ -53,6 +53,7 @@ pub fn detect_key() -> String {
     s
 }
 
+#[allow(dead_code)]
 fn recieve_line(s: &str) -> String {
     print!("{}{} : {}",style::Bold, s, style::Reset);
     let mut input = String::new();

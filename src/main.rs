@@ -1,4 +1,6 @@
+#![allow(non_snake_case)]
 mod term;
+mod structure;
 
 fn main() {
     term::display("Main Menu");
