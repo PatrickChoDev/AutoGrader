@@ -1,10 +1,12 @@
 [package]
 name = "AutoGrader"
+description = "AutoGrader Rust-backend"
 version = "0.1.0"
 authors = ["Thanapat Chotipun <devpatrick.cho@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
-async-std = "1.9.0"
-online = "2.0.0"
-termion = "1.5.6"
+tokio = { version = "1.13.0", features = ["full"] }
+toml = "0.5.8"
+serde = { version = "1.0", features = ["derive"] }
+clap = { version = "2.33.3", features =["yaml","color","suggestions"] }

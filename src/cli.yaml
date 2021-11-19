@@ -15,9 +15,6 @@ subcommands:
             takes_value: true
             value_name: FILE
             help: Config file to check
-        - debug:
-            short: d
-            help: Display debuging message
   - run:
       about: "Run single test file"
       short: r
