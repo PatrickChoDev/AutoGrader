@@ -8,14 +8,11 @@
 ### *You need [Rustup](https://rustup.rs/) to compile AutoGrader!!!*
 
 <br/>
-<br/>
 
 ## **Installation**
----
-*`TBD`*
+*TBD*
 
 ## **Configuration**
----
 * ### **Test Config**:
   Use to configure how every test being
 ```toml
