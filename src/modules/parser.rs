@@ -1,10 +1,10 @@
 use serde::{Deserialize, Serialize};
 use toml::Value;
 
-#[derive(Deserialize,Serialize,Debug)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct DescriptionType {
-    filetype: Option<String>,
-    path: Option<String>
+    filetype: String,
+    path: String,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -18,27 +18,23 @@ pub struct TestConfig {
     files: Option<Vec<String>>,
 }
 
-pub trait GraderConfig {
-    fn into() {
-        println!("Hello")
-    }
-}
-
 fn parse_toml(filename: &str) -> Option<Value> {
     let filebuf = std::fs::read_to_string(filename);
     if filebuf.as_ref().is_err() {
-        println!("{} : {}",filename,filebuf.as_ref().unwrap_err());
+        println!("{} : {}", filename, filebuf.as_ref().unwrap_err());
         None
-    }
-    else {
+    } else {
         Some(filebuf.ok().unwrap().parse::<Value>().unwrap())
     }
 }
 
 pub fn check_testconfig(test_file: Option<&str>) -> bool {
     match test_file {
+        Some(file) => match parse_toml(file) {
+            Some(t) => true,
+            None => false,
+        },
         None => false,
-        Some(_) => true,
     }
 }
 
@@ -53,4 +49,5 @@ fn read_file() {
 
 #[test]
 fn read_test_file() {
+    assert_eq!(check_testconfig(Some("tests/sum/sum.test.toml")), true)
 }

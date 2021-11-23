@@ -1,0 +1,7 @@
+description = {filetype = 'HTML', path = '/path/to/desc.html'} 
+files = ['testcase1.txt', 'testcase2.txt'] 
+id = 1 # Optional
+info = 'Calculate some from two numbers provided' 
+name = 'Sum two numbers' 
+num_testcase = 10 
+score = 100
