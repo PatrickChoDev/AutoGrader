@@ -6,7 +6,8 @@ authors = ["Thanapat Chotipun <devpatrick.cho@gmail.com>"]
 edition = "2021"
 
 [dependencies]
+clap = { version = "2.33.3", features =["yaml","color","suggestions"] }
+log = { version = "0.4.14", features = ["std"] }
+serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.13.0", features = ["full"] }
 toml = "0.5.8"
-serde = { version = "1.0", features = ["derive"] }
-clap = { version = "2.33.3", features =["yaml","color","suggestions"] }

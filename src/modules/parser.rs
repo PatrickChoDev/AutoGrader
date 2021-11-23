@@ -1,50 +1,56 @@
 use serde::{Deserialize, Serialize};
+use toml::Value;
+
+#[derive(Deserialize,Serialize,Debug)]
+pub struct DescriptionType {
+    filetype: Option<String>,
+    path: Option<String>
+}
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct TestConfig {
     id: Option<u32>,
     name: String,
-    description: Option<String>,
+    info: Option<String>,
+    description: Option<DescriptionType>,
     score: Option<u32>,
     num_testcase: Option<u8>,
-    reference: Option<String>,
-    file: Option<Vec<String>>,
+    files: Option<Vec<String>>,
 }
 
-#[derive(Deserialize, Serialize)]
-pub struct FileConfig {
-    id: Option<u32>,
-    file_name: Option<String>,
+pub trait GraderConfig {
+    fn into() {
+        println!("Hello")
+    }
 }
 
-fn parse_file(filename: &str) -> () {}
+fn parse_toml(filename: &str) -> Option<Value> {
+    let filebuf = std::fs::read_to_string(filename);
+    if filebuf.as_ref().is_err() {
+        println!("{} : {}",filename,filebuf.as_ref().unwrap_err());
+        None
+    }
+    else {
+        Some(filebuf.ok().unwrap().parse::<Value>().unwrap())
+    }
+}
 
-pub fn check_test(test_file: Option<&str>) -> bool {
+pub fn check_testconfig(test_file: Option<&str>) -> bool {
     match test_file {
         None => false,
-        Some(_file) => true,
+        Some(_) => true,
     }
 }
 
 #[cfg(test)]
 #[test]
 fn read_file() {
-    println!("Test passed");
+    let fileOkay = parse_toml("Cargo.toml");
+    assert!(fileOkay.is_some());
+    let fileNotOkay = parse_toml("NoFileFound.toml");
+    assert!(fileNotOkay.is_none());
 }
 
 #[test]
 fn read_test_file() {
-    let config: TestConfig = toml::from_str(
-        r#"
-    id = 0
-    name = 'Test 1'
-    score = 100
-    num_testcase = 5
-    reference = 'filename.pdf'
-    file = ['readme.md','hey.txt','lol.py']
-    "#,
-    )
-    .unwrap();
-    println!("{:#?}", config);
-    println!("Passed!!");
 }
