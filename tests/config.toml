@@ -1,0 +1,7 @@
+broadcast_port = ""
+name = "AutoGrader Test"
+db_host = "127.0.0.1"
+db_type = ""
+runner_host = "127.0.0.1"
+runner_port = "15000"
+test_directory = "~/"
