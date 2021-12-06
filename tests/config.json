@@ -1,0 +1,17 @@
+{
+  "name": "AutoGrader Test",
+  "port": {
+    "frontend": 3000,
+    "api": 5000
+  },
+  "database": {
+    "host": "127.0.0.1",
+    "port": 12345,
+    "mode": "pgsql"
+  },
+  "runner": {
+    "host": "127.0.0.1",
+    "port": 15000
+  },
+  "test_dir": "~/"
+}

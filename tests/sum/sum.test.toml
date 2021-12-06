@@ -1,9 +1,0 @@
-case_sep = '---' 
-comment = true 
-description = {filetype = 'HTML', path = '/path/to/desc.html'} 
-id = 1 # Optional
-info = 'Calculate some from two numbers provided' 
-name = 'Sum two numbers' 
-score = 100 
-trim_line = true
-limit = ["0.01","13M"]
