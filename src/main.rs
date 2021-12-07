@@ -6,15 +6,11 @@ use clap::App;
 
 mod modules;
 
-
 fn main() {
     let yaml = load_yaml!("cli.yaml");
     let args = App::from_yaml(yaml).get_matches();
-    if let Some(testing) = args.subcommand_matches("test") {}
-    if let Some(run) = args.subcommand_matches("run") {
-//        modules::run::run_test(run.value_of("TEST"), run.value_of("INPUT"),&config);
-    }
-    if let Some(serve) = args.subcommand_matches("serve") {
-        
-    }
+    if args.subcommand.is_none() {}
+    if let Some(_testing) = args.subcommand_matches("test") {}
+    if let Some(_run) = args.subcommand_matches("run") {}
+    if let Some(_serve) = args.subcommand_matches("serve") {}
 }

@@ -1,17 +1,23 @@
 {
   "name": "AutoGrader Test",
-  "port": {
-    "frontend": 3000,
-    "api": 5000
-  },
+  "port": 5000,
   "database": {
     "host": "127.0.0.1",
     "port": 12345,
-    "mode": "pgsql"
+    "username": "autograder",
+    "password": "a4t0gr4d3r",
+    "mode": "pgsql",
+    "scheme": {
+      "db": "autograder_session",
+      "user": "user",
+      "score": "score",
+      "group_score": "group_score"
+    }
   },
   "runner": {
     "host": "127.0.0.1",
     "port": 15000
   },
-  "test_dir": "~/"
+  "test_dir": "~/",
+  "group": true
 }

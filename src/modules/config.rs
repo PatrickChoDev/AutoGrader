@@ -1,11 +1,22 @@
 use serde::{Deserialize, Serialize};
-use serde_json::{from_str, Number};
+use serde_json::{from_str, Map, Number, Value};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct DatabaseConfig {
     host: String,
     port: Number,
+    username: String,
+    password: String,
     mode: String,
+    scheme: DatabaseScheme,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DatabaseScheme {
+    db: String,
+    user: String,
+    score: String,
+    group_score: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -15,18 +26,13 @@ pub struct RunnerConfig {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct PortConfig {
-    frontend: Number,
-    api: Number,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
 pub struct AutoGraderConfig {
     name: String,
     database: DatabaseConfig,
-    port: PortConfig,
+    port: Number,
     runner: RunnerConfig,
     test_dir: String,
+    group: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -38,9 +44,9 @@ pub struct TestDescriptionConfig {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TestCasesConfig {
     dir: Option<String>,
-    grouping: Option<bool>,
     solution: String,
     pass_all: Option<bool>,
+    score_weight: Option<Map<String, Value>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -55,6 +61,7 @@ pub struct TestConfig {
     name: String,
     info: Option<String>,
     description: Option<TestDescriptionConfig>,
+    score: Option<Number>,
     cases: TestCasesConfig,
     limit: Option<TestLimitConfig>,
 }
@@ -76,7 +83,10 @@ pub fn parse_test_config(filename: &str) -> Option<TestConfig> {
         Ok(d) => match from_str::<TestConfig>(&d) {
             Ok(d) => Some(d),
             Err(e) => {
-                println!("{}", e);
+                println!(
+                    "{} will be ignored. Because parsing error.\nError: {}",
+                    filename, e
+                );
                 None
             }
         },
@@ -99,8 +109,5 @@ fn load_invalid_config() {
 #[test]
 fn load_test_config() {
     let parsed = parse_test_config("tests/sum.test.json");
-    match parsed.as_ref() {
-        Some(n) => println!("{:#?}",n),
-        None => panic!("")
-    }
+    assert!(parsed.is_some());
 }

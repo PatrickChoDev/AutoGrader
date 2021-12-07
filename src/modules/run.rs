@@ -4,4 +4,3 @@ pub fn run_test(test_file: Option<&str>, input_file: Option<&str>) -> () {
     println!("Running on >> {{}}");
     lang::cpp::compile();
 }
-
