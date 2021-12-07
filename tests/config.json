@@ -1,0 +1,23 @@
+{
+  "name": "AutoGrader Test",
+  "port": 5000,
+  "database": {
+    "host": "127.0.0.1",
+    "port": 12345,
+    "username": "autograder",
+    "password": "a4t0gr4d3r",
+    "mode": "pgsql",
+    "scheme": {
+      "db": "autograder_session",
+      "user": "user",
+      "score": "score",
+      "group_score": "group_score"
+    }
+  },
+  "runner": {
+    "host": "127.0.0.1",
+    "port": 15000
+  },
+  "test_dir": "~/",
+  "group": true
+}

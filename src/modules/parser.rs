@@ -1,56 +1,47 @@
-use serde::{Deserialize, Serialize};
-use toml::Value;
+use walkdir::WalkDir;
 
-#[derive(Deserialize,Serialize,Debug)]
-pub struct DescriptionType {
-    filetype: Option<String>,
-    path: Option<String>
-}
-
-#[derive(Deserialize, Serialize, Debug)]
-pub struct TestConfig {
-    id: Option<u32>,
-    name: String,
-    info: Option<String>,
-    description: Option<DescriptionType>,
-    score: Option<u32>,
-    num_testcase: Option<u8>,
-    files: Option<Vec<String>>,
-}
-
-pub trait GraderConfig {
-    fn into() {
-        println!("Hello")
+pub fn parse_ext(filename: &str) -> Result<&str, &str> {
+    match filename.split_inclusive(".").last() {
+        Some(ext) => Ok(ext),
+        None => Err("No file extension found in file"),
     }
 }
 
-fn parse_toml(filename: &str) -> Option<Value> {
-    let filebuf = std::fs::read_to_string(filename);
-    if filebuf.as_ref().is_err() {
-        println!("{} : {}",filename,filebuf.as_ref().unwrap_err());
-        None
-    }
-    else {
-        Some(filebuf.ok().unwrap().parse::<Value>().unwrap())
+pub fn load_input(filename: &str) -> Option<String> {
+    let buffer = std::fs::read_to_string(filename);
+    match buffer {
+        Ok(data) => Some(data),
+        Err(_) => None,
     }
 }
 
-pub fn check_testconfig(test_file: Option<&str>) -> bool {
-    match test_file {
-        None => false,
-        Some(_) => true,
+pub fn find_input(dirname: &str) -> Option<Vec<String>> {
+    let mut input_streams: Vec<String> = vec![];
+    for e in WalkDir::new(dirname).into_iter().filter_map(|e| e.ok()) {
+        if e.metadata().unwrap().is_file() {
+            let filepath = e.path().display().to_string();
+            if parse_ext(&filepath).ok() == Some("txt") {
+                match load_input(&filepath) {
+                    Some(d) => input_streams.push(d),
+                    None => (),
+                }
+            }
+        }
+    }
+    if input_streams.len() > 0 {
+        return Some(input_streams);
+    } else {
+        return None;
     }
 }
 
 #[cfg(test)]
 #[test]
-fn read_file() {
-    let fileOkay = parse_toml("Cargo.toml");
-    assert!(fileOkay.is_some());
-    let fileNotOkay = parse_toml("NoFileFound.toml");
-    assert!(fileNotOkay.is_none());
+fn read_input_file() {
+    assert!(load_input("tests/sum/sum1.txt").is_some());
 }
 
 #[test]
-fn read_test_file() {
+fn find_input_cases() {
+    assert!(find_input("tests/sum").is_some());
 }
