@@ -9,21 +9,6 @@
 <br/>
 
 ## **Installation**
-<<<<<<< HEAD
-*TBD*
-
-## **Configuration**
-* ### **Test Config**:
-  Use to configure how every test being
-```toml
-id = "1" # Optional
-name = "Sum two numbers"
-info = "Calculate some from two numbers provided"
-decription = { type: "HTML", path: "/path/to/desc.html" }
-num_testcase = 10
-score = 100
-files = ['testcase1.txt','testcase2.txt',....]
-=======
 
 ---
 
@@ -97,5 +82,4 @@ files = ['testcase1.txt','testcase2.txt',....]
     "time": 1000
   }
 }
->>>>>>> develop
 ```
