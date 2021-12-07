@@ -2,18 +2,18 @@
   "name": "Sum the number",
   "info": "Sum the numbers given in array",
   "description": {
-      "type" : "md",
-      "file" : "sum/sum.desc.md"
+    "reader": "md",
+    "content": "sum/sum.desc.md"
   },
   "cases": {
-      "dir": "sum",
-      "grouping": true,
-      "solution": "sum/sol.cpp",
-      "pass_all": true
+    "dir": "sum",
+    "grouping": true,
+    "solution": "sum/sol.cpp",
+    "pass_all": true
   },
   "limit": {
-      "cpu": 1000,
-      "memory": "256M",
-      "time": 1000
+    "cpu": 1000,
+    "memory": "256M",
+    "time": 1000
   }
 }
