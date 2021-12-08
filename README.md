@@ -8,6 +8,12 @@ _This repo contains only ***core*** of AutoGrader not included the frontend whic
 
 <br/>
 
+![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)
+![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
+![LOC](https://img.shields.io/tokei/lines/github/PatrickChoDev/AutoGrader?color=Green&label=Line%20of%20Codes&logo=rust&style=flat-square)
+
+<br/>
+
 ## **Installation**
 
 - Any Linux Distribution
