@@ -31,7 +31,8 @@ pub struct AutoGraderConfig {
     database: DatabaseConfig,
     port: Number,
     runner: RunnerConfig,
-    test_dir: String,
+    test_dir: Option<String>,
+    file_dir: Option<String>,
     group: bool,
 }
 
@@ -97,17 +98,7 @@ pub fn parse_test_config(filename: &str) -> Option<TestConfig> {
 #[cfg(test)]
 #[test]
 fn load_config() {
-    parse_root_config("tests/config.json");
-}
-
-#[test]
-#[should_panic]
-fn load_invalid_config() {
-    parse_root_config("wtfconfig.json");
-}
-
-#[test]
-fn load_test_config() {
-    let parsed = parse_test_config("tests/sum.test.json");
-    assert!(parsed.is_some());
+    assert!(parse_root_config("tests/config.json").is_some());
+    assert!(parse_root_config("wtfconfig.json").is_none());
+    assert!(parse_test_config("tests/sum.test.json").is_some());
 }

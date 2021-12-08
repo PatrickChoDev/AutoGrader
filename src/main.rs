@@ -1,6 +1,6 @@
 #![allow(non_snake_case)]
-use clap::{App, AppSettings, Arg, SubCommand};
 use ansi_term::Colour;
+use clap::{App, AppSettings, Arg, SubCommand};
 
 mod modules;
 
@@ -62,19 +62,35 @@ fn main() {
             .unwrap_or([""].to_vec())[..]
         {
             ["test.", "json"] => {
-                println!("{}  Parse as {} config....",Colour::Blue.bold().paint("\u{24D8}"),Colour::Purple.bold().paint("Test"));
+                println!(
+                    "{}  Parse as {} config....",
+                    Colour::Blue.bold().paint("\u{24D8}"),
+                    Colour::Purple.bold().paint("Test")
+                );
                 if modules::config::parse_test_config(&filename).is_some() {
-                    println!("{}  This file is valid {} config",Colour::Green.bold().paint("\u{2714}"),Colour::Purple.bold().paint("Test"));
+                    println!(
+                        "{}  This file is valid {} config",
+                        Colour::Green.bold().paint("\u{2714}"),
+                        Colour::Purple.bold().paint("Test")
+                    );
                 } else {
-                    println!("{}  Not valid!!!",Colour::Red.bold().paint("\u{2718}"));
+                    println!("{}  Not valid!!!", Colour::Red.bold().paint("\u{2718}"));
                 }
             }
             ["json"] => {
-                println!("{}  Parse as {} config....",Colour::Blue.bold().paint("\u{24D8}"),Colour::Purple.bold().paint("Session"));
+                println!(
+                    "{}  Parse as {} config....",
+                    Colour::Blue.bold().paint("\u{24D8}"),
+                    Colour::Purple.bold().paint("Session")
+                );
                 if modules::config::parse_root_config(&filename).is_some() {
-                    println!("{}  This file is valid {} config",Colour::Green.bold().paint("\u{2714}"),Colour::Purple.bold().paint("Session"));
+                    println!(
+                        "{}  This file is valid {} config",
+                        Colour::Green.bold().paint("\u{2714}"),
+                        Colour::Purple.bold().paint("Session")
+                    );
                 } else {
-                    println!("{}  Not valid!!!",Colour::Red.bold().paint("\u{2718}"));
+                    println!("{}  Not valid!!!", Colour::Red.bold().paint("\u{2718}"));
                 }
             }
             _ => println!("This file isn't AutoGraderConfig file"),

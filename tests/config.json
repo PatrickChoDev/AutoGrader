@@ -19,5 +19,6 @@
     "port": 15000
   },
   "test_dir": "~/",
+  "file_dir": "tests/tmp",
   "group": true
 }

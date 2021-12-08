@@ -64,8 +64,9 @@ pub fn find_testcases(dirname: &str) -> Option<Vec<TestCase>> {
 
 #[cfg(test)]
 #[test]
-fn parse_config_and_input_files() {
+fn parse_file_extension() {
     assert_eq!(parse_ext("tests/config.json").unwrap(),["json"].to_vec());
+    assert_eq!(parse_ext("tests/sum.test.json").unwrap(),["test.","json"].to_vec());
 }
 
 #[test]
