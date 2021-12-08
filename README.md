@@ -2,7 +2,7 @@
 
 **AutoGrader** is a `Rust` Programming competition scoreboard which can use on both CLI and TCP/IP protocol.
 
-\*This repo contains only **_core_** of AutoGrader not included the frontend which can easily implement API to send the submissions files\*
+_This repo contains only ***core*** of AutoGrader not included the frontend which can easily implement API to send the submissions files_
 
 ### _You need [Rustup](https://rustup.rs/) to compile AutoGrader!!!_
 
@@ -10,20 +10,16 @@
 
 ## **Installation**
 
----
-
 - Any Linux Distribution
 - [Docker](https://docker.com) installed with user added to group, `docker`.
 - If API can't reach please confirm you added the firewall rules to the `port` in [Session Config](#SessionConfig)
-- *TBD next...*
+- _TBD next..._
 
 ## **Configuration**
 
----
-
 - ### <a name="#SessionConfig"></a>**Session Config**:
   - Use to configure session for `serve` subcommand.
-  - If `port` is less than `1000` **AutoGrader** required to use `sudo` privilege to listening on incoming request via **API**. *(Not recommend)*
+  - If `port` is less than `1000` **AutoGrader** required to use `sudo` privilege to listening on incoming request via **API**. _(Not recommend)_
   - `scheme` is use to define database table on database named in `db` field.
   - `group_score` is an optional for individual scoring or when `{"group":false}`.
 
