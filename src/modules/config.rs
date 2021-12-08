@@ -66,14 +66,14 @@ pub struct TestConfig {
     limit: Option<TestLimitConfig>,
 }
 
-pub fn parse_root_config(filename: &str) -> AutoGraderConfig {
+pub fn parse_root_config(filename: &str) -> Option<AutoGraderConfig> {
     let buffer = std::fs::read_to_string(filename);
     match buffer {
         Ok(d) => match from_str::<AutoGraderConfig>(&d) {
-            Ok(d) => d,
-            Err(e) => panic!("Config file cannot parse. Error: {}", e),
+            Ok(d) => Some(d),
+            Err(_) => None,
         },
-        Err(e) => panic!("Config file not found. Error: {}", e),
+        Err(_) => None,
     }
 }
 
