@@ -44,7 +44,7 @@ pub struct TestDescriptionConfig {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TestCasesConfig {
-    dir: Option<String>,
+    pub dir: Option<String>,
     solution: String,
     pass_all: Option<bool>,
     score_weight: Option<Map<String, Value>>,
@@ -63,7 +63,7 @@ pub struct TestConfig {
     info: Option<String>,
     description: Option<TestDescriptionConfig>,
     score: Option<Number>,
-    cases: TestCasesConfig,
+    pub cases: TestCasesConfig,
     limit: Option<TestLimitConfig>,
 }
 

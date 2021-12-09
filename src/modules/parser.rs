@@ -1,17 +1,17 @@
-use uuid::Uuid;
+use nanoid::nanoid;
 use walkdir::WalkDir;
 
 pub struct Test {
-    id: Uuid,
-    cases: Option<Vec<TestCase>>,
+    id: String,
+    pub cases: Option<Vec<TestCase>>,
     score: u32,
 }
 
 pub struct TestCase {
-    id: Uuid,
-    input: String,
-    output: Option<String>,
-    score: Option<u32>,
+    id: String,
+    pub input: String,
+    pub output: Option<String>,
+    pub score: Option<u32>,
 }
 
 pub fn parse_ext(filename: &str) -> Result<Vec<&str>, &str> {
@@ -27,7 +27,7 @@ pub fn load_testcase(filename: &str) -> Option<TestCase> {
     let buffer = std::fs::read_to_string(filename);
     match buffer {
         Ok(data) => Some(TestCase {
-            id: Uuid::new_v4(),
+            id: nanoid!(32),
             input: data,
             output: None,
             score: None,

@@ -1,5 +1,6 @@
 use super::{config, parser};
-use uuid::Uuid;
+use nanoid::nanoid;
+use std::process::{Command, Stdio};
 
 trait LanguageOperation {
     fn save_correct(
@@ -13,38 +14,41 @@ trait LanguageOperation {
     }
 }
 
-pub fn get_operation(filename: &str) -> Option<String> {
-    let mut op = String::new();
+pub fn get_exec(filename: &str) ->  Option<Vec<String>> {
+    let mut tmp_path = String::from("/tmp/solution-");
+    tmp_path.push_str(nanoid!(32).as_str());
     match parser::parse_ext(&filename).unwrap().last().unwrap() {
         &"rs" => {
-            std::fmt::write(
-                &mut op,
-                format_args!("rustc {} -o /tmp/solution-{}", &filename, Uuid::new_v4()),
-            )
-            .expect("Error occurred while trying to get test case operation");
+            Command::new("rustc")
+                .args([&filename, "-o", &tmp_path])
+                .current_dir("/")
+                .spawn()
+                .ok()
+                .expect("Cannot compile").try_wait().unwrap();                
+            Command::new("chmod").args(["777",&tmp_path]).spawn().ok().expect("Cannot set file permission");
+            Some([tmp_path].to_vec())
         }
-        &"py" | &"py3" => {
-            std::fmt::write(&mut op, format_args!("python {}", &filename))
-                .expect("Error occurred while trying to get test case operation");
-        }
+        &"py" | &"py3" => Some(["python".to_string(), filename.to_string()].to_vec()),
         &"c" => {
-            std::fmt::write(
-                &mut op,
-                format_args!("gcc {} -o /tmp/solution-{}", &filename, Uuid::new_v4()),
-            )
-            .expect("Error occurred while trying to get test case operation");
+            Command::new("gcc")
+                .args([&filename, "-o", &tmp_path])
+                .current_dir("/")
+                .spawn()
+                .ok()
+                .expect("Cannot compile");
+            Command::new("chmod").args(["777",&tmp_path]).spawn().ok().expect("Cannot set file permission");
+            Some([tmp_path].to_vec())
         }
         &"cpp" => {
-            std::fmt::write(
-                &mut op,
-                format_args!("g++ {} -o /tmp/solution-{}", &filename, Uuid::new_v4()),
-            )
-            .expect("Error occurred while trying to get test case operation");
+            Command::new("g++")
+                .args([&filename, "-o", &tmp_path])
+                .current_dir("/")
+                .spawn()
+                .ok()
+                .expect("Cannot compile").try_wait().unwrap();
+            Command::new("chmod").args(["777",&tmp_path]).spawn().ok().expect("Cannot set file permission").try_wait().unwrap();
+            Some([tmp_path].to_vec())
         }
-        _ => (),
-    };
-    if op.len() == 0 {
-        return None;
+        _ => None,
     }
-    Some(op)
 }
