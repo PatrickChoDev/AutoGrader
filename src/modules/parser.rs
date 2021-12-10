@@ -1,4 +1,3 @@
-use nanoid::nanoid;
 use walkdir::WalkDir;
 
 pub struct Test {
@@ -23,21 +22,8 @@ pub fn parse_ext(filename: &str) -> Result<Vec<&str>, &str> {
     }
 }
 
-pub fn load_testcase(filename: &str) -> Option<TestCase> {
-    let buffer = std::fs::read_to_string(filename);
-    match buffer {
-        Ok(data) => Some(TestCase {
-            id: nanoid!(32),
-            input: data,
-            output: None,
-            score: None,
-        }),
-        Err(_) => None,
-    }
-}
-
-pub fn find_testcases(dirname: &str) -> Option<Vec<TestCase>> {
-    let mut input_streams: Vec<TestCase> = vec![];
+pub fn find_testcases(dirname: &str) -> Option<Vec<String>> {
+    let mut input_streams: Vec<String> = vec![];
     for e in WalkDir::new(dirname).into_iter().filter_map(|e| e.ok()) {
         if e.metadata().unwrap().is_file() {
             let filepath = e.path().display().to_string();
@@ -47,12 +33,7 @@ pub fn find_testcases(dirname: &str) -> Option<Vec<TestCase>> {
                 .last()
                 .unwrap()
                 == &"txt"
-            {
-                match load_testcase(&filepath) {
-                    Some(d) => input_streams.push(d),
-                    None => (),
-                }
-            }
+            { input_streams.push(filepath)}
         }
     }
     if input_streams.len() > 0 {
@@ -65,13 +46,11 @@ pub fn find_testcases(dirname: &str) -> Option<Vec<TestCase>> {
 #[cfg(test)]
 #[test]
 fn parse_file_extension() {
-    assert_eq!(parse_ext("tests/config.json").unwrap(),["json"].to_vec());
-    assert_eq!(parse_ext("tests/sum.test.json").unwrap(),["test.","json"].to_vec());
-}
-
-#[test]
-fn read_input_file() {
-    assert!(load_testcase("tests/sum/sum1.txt").is_some());
+    assert_eq!(parse_ext("tests/config.json").unwrap(), ["json"].to_vec());
+    assert_eq!(
+        parse_ext("tests/sum.test.json").unwrap(),
+        ["test.", "json"].to_vec()
+    );
 }
 
 #[test]

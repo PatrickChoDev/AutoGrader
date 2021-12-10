@@ -1,53 +1,55 @@
-use super::{config, parser};
+use super::parser;
+use async_process::Command;
 use nanoid::nanoid;
-use std::process::{Command, Stdio};
+use std::path::Path;
 
-trait LanguageOperation {
-    fn save_correct(
-        test_file: &str,
-        mut case_config: config::TestCasesConfig,
-    ) -> config::TestCasesConfig {
-        case_config
-    }
-    fn run(input_file: &str, case_config: config::TestCasesConfig) -> Result<u32, String> {
-        Ok(0)
-    }
-}
-
-pub fn get_exec(filename: &str) ->  Option<Vec<String>> {
+pub async fn get_exec(filename: &str) -> Option<Vec<String>> {
     let mut tmp_path = String::from("/tmp/solution-");
     tmp_path.push_str(nanoid!(32).as_str());
+    let tmp_path = Path::new(tmp_path.as_str()).to_str().unwrap();
     match parser::parse_ext(&filename).unwrap().last().unwrap() {
         &"rs" => {
-            Command::new("rustc")
+            if Command::new("rustc")
                 .args([&filename, "-o", &tmp_path])
-                .current_dir("/")
-                .spawn()
+                .status()
+                .await
                 .ok()
-                .expect("Cannot compile").try_wait().unwrap();                
-            Command::new("chmod").args(["777",&tmp_path]).spawn().ok().expect("Cannot set file permission");
-            Some([tmp_path].to_vec())
+                .unwrap()
+                .success()
+            {
+                return Some([tmp_path.to_string()].to_vec());
+            } else {
+                return None;
+            }
         }
         &"py" | &"py3" => Some(["python".to_string(), filename.to_string()].to_vec()),
         &"c" => {
-            Command::new("gcc")
+            if Command::new("gcc")
                 .args([&filename, "-o", &tmp_path])
-                .current_dir("/")
-                .spawn()
+                .status()
+                .await
                 .ok()
-                .expect("Cannot compile");
-            Command::new("chmod").args(["777",&tmp_path]).spawn().ok().expect("Cannot set file permission");
-            Some([tmp_path].to_vec())
+                .unwrap()
+                .success()
+            {
+                return Some([tmp_path.to_string()].to_vec());
+            } else {
+                return None;
+            }
         }
         &"cpp" => {
-            Command::new("g++")
+            if Command::new("g++")
                 .args([&filename, "-o", &tmp_path])
-                .current_dir("/")
-                .spawn()
+                .status()
+                .await
                 .ok()
-                .expect("Cannot compile").try_wait().unwrap();
-            Command::new("chmod").args(["777",&tmp_path]).spawn().ok().expect("Cannot set file permission").try_wait().unwrap();
-            Some([tmp_path].to_vec())
+                .unwrap()
+                .success()
+            {
+                return Some([tmp_path.to_string()].to_vec());
+            } else {
+                return None;
+            }
         }
         _ => None,
     }

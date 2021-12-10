@@ -3,11 +3,11 @@
   "info": "Sum the numbers given in array",
   "description": {
     "reader": "md",
-    "content": "sum/sum.desc.md"
+    "content": "tests/sum/sum.desc.md"
   },
   "score": 100,
   "cases": {
-    "dir": "sum",
+    "dir": "tests/sum",
     "solution": "sum/sol.cpp",
     "pass_all": true,
     "score_weight": {
