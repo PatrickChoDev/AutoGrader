@@ -1,24 +1,11 @@
 use walkdir::WalkDir;
 
-pub struct Test {
-    id: String,
-    pub cases: Option<Vec<TestCase>>,
-    score: u32,
-}
-
-pub struct TestCase {
-    id: String,
-    pub input: String,
-    pub output: Option<String>,
-    pub score: Option<u32>,
-}
-
 pub fn parse_ext(filename: &str) -> Result<Vec<&str>, &str> {
     let sep: Vec<&str> = filename.split_inclusive(".").collect();
-    if sep.len() > 0 {
-        return Ok(sep[1..].to_vec());
+    if !sep.is_empty() {
+        Ok(sep[1..].to_vec())
     } else {
-        return Err("No file extension found.");
+        Err("No file extension found.")
     }
 }
 
@@ -29,17 +16,19 @@ pub fn find_testcases(dirname: &str) -> Option<Vec<String>> {
             let filepath = e.path().display().to_string();
             if parse_ext(&filepath)
                 .ok()
-                .unwrap_or([""].to_vec())
+                .unwrap_or_else(|| [""].to_vec())
                 .last()
                 .unwrap()
                 == &"txt"
-            { input_streams.push(filepath)}
+            {
+                input_streams.push(filepath)
+            }
         }
     }
-    if input_streams.len() > 0 {
-        return Some(input_streams);
+    if !input_streams.is_empty() {
+        Some(input_streams)
     } else {
-        return None;
+        None
     }
 }
 

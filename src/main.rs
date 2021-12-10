@@ -1,14 +1,14 @@
 #![allow(non_snake_case)]
 use ansi_term::Colour;
 use clap::{App, AppSettings, Arg, SubCommand};
-
 mod modules;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let args = App::new("AutoGrader")
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .setting(AppSettings::ColoredHelp)
-        .version("0.0.1")
+        .version("1.0.0")
         .about("Programming Competition Scoreboard")
         .author("Thanapat Chotipun <devpatrick.cho@gmail.com>")
         .subcommands([
@@ -55,11 +55,11 @@ fn main() {
                     ]
                     ),
         ]).get_matches();
-    if let Some(_testing) = args.subcommand_matches("test") {
-        let filename = _testing.value_of("input").unwrap();
-        match modules::parser::parse_ext(&filename)
+    if let Some(testing) = args.subcommand_matches("test") {
+        let filename = testing.value_of("input").unwrap();
+        match modules::parser::parse_ext(filename)
             .ok()
-            .unwrap_or([""].to_vec())[..]
+            .unwrap_or_else(|| [""].to_vec())[..]
         {
             ["test.", "json"] => {
                 println!(
@@ -67,7 +67,7 @@ fn main() {
                     Colour::Blue.bold().paint("\u{24D8}"),
                     Colour::Purple.bold().paint("Test")
                 );
-                if modules::config::parse_test_config(&filename).is_some() {
+                if modules::config::parse_test_config(filename).is_some() {
                     println!(
                         "{}  This file is valid {} config",
                         Colour::Green.bold().paint("\u{2714}"),
@@ -83,7 +83,7 @@ fn main() {
                     Colour::Blue.bold().paint("\u{24D8}"),
                     Colour::Purple.bold().paint("Session")
                 );
-                if modules::config::parse_root_config(&filename).is_some() {
+                if modules::config::parse_root_config(filename).is_some() {
                     println!(
                         "{}  This file is valid {} config",
                         Colour::Green.bold().paint("\u{2714}"),
@@ -96,6 +96,15 @@ fn main() {
             _ => println!("This file isn't AutoGraderConfig file"),
         }
     }
-    if let Some(_run) = args.subcommand_matches("run") {}
+    if let Some(run) = args.subcommand_matches("run") {
+        println!(
+            "{:?}",
+            modules::run::run_test(
+                modules::config::parse_test_config(run.value_of("test").unwrap()).unwrap(),
+                run.value_of("input").unwrap()
+            )
+            .await
+        );
+    }
     if let Some(_serve) = args.subcommand_matches("serve") {}
 }
