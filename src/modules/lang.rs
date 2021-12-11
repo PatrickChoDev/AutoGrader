@@ -4,6 +4,10 @@ use nanoid::nanoid;
 use std::path::Path;
 
 pub async fn get_exec(filename: &str) -> Option<Vec<String>> {
+    #[cfg(target_family = "windows")]
+    let mut tmp_path =
+        String::from("%systemdrive%/Windows/Temp. %userprofile%/AppData/Local/Temp/solution-");
+    #[cfg(not(target_family = "windows"))]
     let mut tmp_path = String::from("/tmp/solution-");
     tmp_path.push_str(nanoid!(32).as_str());
     let tmp_path = Path::new(tmp_path.as_str()).to_str().unwrap();

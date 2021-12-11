@@ -2,6 +2,7 @@
 use ansi_term::Colour;
 use clap::{App, AppSettings, Arg, SubCommand};
 use std::env::var_os;
+use tokio::net::TcpListener;
 mod modules;
 
 #[tokio::main]
@@ -136,7 +137,7 @@ async fn main() {
     }
     if let Some(run) = args.subcommand_matches("run") {
         println!(
-            "{:?}",
+            "{}",
             modules::run::run_test(
                 modules::config::parse_test_config(run.value_of("test").unwrap()).unwrap(),
                 run.value_of("input").unwrap()
@@ -144,5 +145,7 @@ async fn main() {
             .await
         );
     }
-    if let Some(_serve) = args.subcommand_matches("serve") {}
+    if let Some(_serve) = args.subcommand_matches("serve") {
+        // let listener = TcpListener::bind("127.0.0.1:8080").await?;
+    }
 }
