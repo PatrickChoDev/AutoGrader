@@ -136,7 +136,7 @@ pub async fn run_test(test_config: config::TestConfig, input_file: &str) -> Test
 }
 
 #[cfg(test)]
-#[actix_rt::test]
+#[tokio::test]
 async fn run_test_file() {
     use super::config;
     assert_eq!(
