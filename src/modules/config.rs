@@ -27,13 +27,13 @@ pub struct RunnerConfig {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AutoGraderConfig {
-    name: String,
-    database: DatabaseConfig,
-    port: Number,
-    runner: RunnerConfig,
-    test_dir: Option<String>,
-    file_dir: Option<String>,
-    group: bool,
+    pub name: String,
+    pub database: DatabaseConfig,
+    pub port: Number,
+    pub runner: RunnerConfig,
+    pub test_dir: Option<String>,
+    pub file_dir: Option<String>,
+    pub group: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

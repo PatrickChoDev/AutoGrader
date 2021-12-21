@@ -10,6 +10,7 @@ pub struct TestScore {
     marker: Vec<String>,
 }
 
+#[allow(clippy::write_with_newline)]
 impl fmt::Display for TestScore {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for (i, m) in self.marker.iter().enumerate() {
@@ -42,7 +43,10 @@ impl fmt::Display for TestScore {
                     f,
                     "Case {}: {}\n",
                     i + 1,
-                    Colour::White.bold().italic().paint("AutoGrader not support this file extension or language")
+                    Colour::White
+                        .bold()
+                        .italic()
+                        .paint("AutoGrader not support this file extension or language")
                 ),
                 _ => write!(
                     f,
@@ -62,7 +66,11 @@ pub async fn run_test(test_config: config::TestConfig, input_file: &str) -> Test
     let mut max_score: i64 = 100;
     let mut marker: Vec<String> = vec![];
     if !Path::new(&input_file).exists() {
-        return TestScore {score,max_score,marker:vec!["E".to_string()]}
+        return TestScore {
+            score,
+            max_score,
+            marker: vec!["E".to_string()],
+        };
     }
     let cases = parser::find_testcases(&test_config.cases.dir.unwrap_or_else(|| "".to_string()))
         .unwrap_or_default();
@@ -83,13 +91,13 @@ pub async fn run_test(test_config: config::TestConfig, input_file: &str) -> Test
                             Some(process) => process.output().await.unwrap(),
                             None => {
                                 marker.push(String::from("?"));
-                                max_score -= &test_config.score.unwrap_or(100) / cases.len() as i64;
+                                max_score -= test_config.score.unwrap_or(100) / cases.len() as i64;
                                 continue;
                             }
                         },
                         None => {
                             marker.push(String::from("?"));
-                            max_score -= &test_config.score.unwrap_or(100) / cases.len() as i64;
+                            max_score -= test_config.score.unwrap_or(100) / cases.len() as i64;
                             continue;
                         }
                     };
@@ -108,7 +116,7 @@ pub async fn run_test(test_config: config::TestConfig, input_file: &str) -> Test
                     };
                     if solution_out.stdout == test_out.stdout {
                         marker.push(String::from("P"));
-                        score += &test_config.score.unwrap_or(100) / cases.len() as i64;
+                        score += test_config.score.unwrap_or(100) / cases.len() as i64;
                     } else {
                         marker.push(String::from("-"));
                     }
@@ -128,7 +136,7 @@ pub async fn run_test(test_config: config::TestConfig, input_file: &str) -> Test
 }
 
 #[cfg(test)]
-#[tokio::test]
+#[actix_rt::test]
 async fn run_test_file() {
     use super::config;
     assert_eq!(

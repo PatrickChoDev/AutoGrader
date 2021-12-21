@@ -9,3 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Run` and `Test` config commands.
 - Support both compile and script languages.
 - Full automate runner for [Python](https://www.python.org), [Rust](https://www.rust-lang.org), [GCC and G++](https://gcc.gnu.org)
+
+## [1.0.1] - 2021-12-21
+### Fix
+- Run test bugs.
+- Windows filesystem path supported.
+- Some speed and security optimized.
