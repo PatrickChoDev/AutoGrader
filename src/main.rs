@@ -8,7 +8,7 @@ async fn main() {
     let args = App::new("AutoGrader")
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .setting(AppSettings::ColoredHelp)
-        .version("1.0.0")
+        .version("1.0.1")
         .about("Programming Competition Scoreboard")
         .author("Thanapat Chotipun <devpatrick.cho@gmail.com>")
         .subcommands([
