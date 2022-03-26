@@ -2,7 +2,7 @@
 
 #[macro_use]
 extern crate clap;
-mod modules;
+mod core;
 use ansi_term::Colour;
 use clap::{Arg, ColorChoice, Command};
 
@@ -44,7 +44,7 @@ fn main() {
   if let Some(testing) = command.subcommand_matches("test") {
     let filenames: Vec<_> = testing.values_of("input").unwrap().collect();
     for filename in filenames {
-      match modules::parser::parse_ext(filename)
+      match core::parser::parse_ext(filename)
       .ok()
       .unwrap_or_else(|| [""].to_vec())[..]
     {
@@ -55,7 +55,7 @@ fn main() {
           Colour::Cyan.dimmed().paint(filename),
           Colour::Purple.bold().paint("Test")
         );
-        if modules::config::parse_test_config(filename).is_some() {
+        if core::config::parse_test_config(filename).is_some() {
           println!(
             "{}  This file is valid {} config",
             Colour::Green.bold().paint("\u{2714}"),
@@ -72,7 +72,7 @@ fn main() {
           Colour::Cyan.dimmed().paint(filename),
           Colour::Purple.bold().paint("Session")
         );
-        if modules::config::parse_root_config(filename).is_some() {
+        if core::config::parse_root_config(filename).is_some() {
           println!(
             "{}  This file is valid {} config",
             Colour::Green.bold().paint("\u{2714}"),
@@ -91,8 +91,8 @@ fn main() {
     async {
       println!(
         "{}",
-        modules::run::run_test(
-          modules::config::parse_test_config(run.value_of("test").unwrap()).unwrap(),
+        core::run::run_test(
+          core::config::parse_test_config(run.value_of("test").unwrap()).unwrap(),
           run.value_of("input").unwrap()
         )
         .await
