@@ -1,15 +1,15 @@
 #![allow(non_snake_case)]
 use std::{env, fs, path::Path};
+mod core;
 
 fn main() {
   let args: Vec<String> = env::args().collect();
-  println!("{:?}", args);
-  let path = match fs::canonicalize(match args.get(1) {
+  let _config_path = match fs::canonicalize(match args.get(1) {
     Some(filepath) => Path::new(filepath),
     None => Path::new("./grader.config.json"),
   }) {
-    Ok(filename) => filename,
-    Err(_) => panic!("File not found"),
+    Ok(n) => n,
+    Err(_) => core::exit::AutoGraderExit::ConfigFileNotFound.exit(),
   };
-  println!("{:?}", path);
+  core::exit::AutoGraderExit::NoError.exit()
 }
