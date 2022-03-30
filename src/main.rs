@@ -11,6 +11,6 @@ fn main() {
     Ok(n) => n.into_boxed_path(),
     Err(_) => core::exit::AutoGraderExit::ConfigFileNotFound.exit(),
   };
-  let _file = core::files::AutoGraderConfig::load_from(config_path);
+  let _file = core::config::AutoGraderConfig::load_from(config_path);
   core::exit::AutoGraderExit::NoError.exit()
 }

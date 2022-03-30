@@ -1,2 +1,3 @@
 pub mod exit;
-pub mod files;
+pub mod config;
+pub mod parser;
