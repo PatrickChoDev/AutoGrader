@@ -3,12 +3,6 @@ use std::process::exit;
 pub enum AutoGraderExit {
   NoError,
   ConfigFileNotFound,
-  ConfigParseFailed,
-  ConnectRunnerFailed,
-  StartRunnerFailed,
-  RuntimeRunnerFailed,
-  RESTServerRuntimeFailed,
-  RESTServerStartFailed,
 }
 
 impl AutoGraderExit {
